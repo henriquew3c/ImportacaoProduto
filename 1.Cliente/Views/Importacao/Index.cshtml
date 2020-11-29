@@ -1,0 +1,53 @@
+﻿
+@model List<Importacao>
+
+@{
+    ViewData["Title"] = "Listagem de Importações";
+}
+
+@section Breadcrumb
+{
+    <li class="breadcrumb-item">Importação</li>
+    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <div class="p-2">
+            <a href="@Url.Action("ImportarArquivo")" class="btn btn-primary btn-sm">
+                <i class="fa fa-plus" aria-hidden="true"></i> Novo
+            </a>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Data de Importação</th>
+                    <th scope="col">Quantidade de Produtos Importados</th>
+                    <th scope="col">Ações</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var importacao in Model)
+                {
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>@importacao.DataImportacao</td>
+                        <td>@importacao.QuantidadeProdutosImportados</td>
+                        <td>
+                            <a title="Visualizar" href="Importacoes/@importacao.Id">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

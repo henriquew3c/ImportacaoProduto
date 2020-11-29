@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.Cliente", "1.Cliente\1.Cliente.csproj", "{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Metadados", "_Metadados", "{01B6E46E-5659-4B50-BECD-F866DEE23479}"
+	ProjectSection(SolutionItems) = preProject
+		_Metadados\Teste de Admissão.xlsx = _Metadados\Teste de Admissão.xlsx
+		_Metadados\Teste PMESP.pdf = _Metadados\Teste PMESP.pdf
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85A5337D-98A1-461D-93BD-7B8F642D7F7E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,46 @@
+﻿@model _1.Cliente.Application.CreateImportacoesRequest
+
+@{
+    ViewData["Title"] = "Nova Importação";
+}
+
+@section Breadcrumb
+{
+    <li class="breadcrumb-item">Importação</li>
+    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("ImportarArquivo", "Importacao", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary("Validação:", new { @class = "alert alert-danger m-b-40" })
+
+            <div class="row pt-2">
+                <div class="col-md-12">
+                    <dl>
+                        <dt>
+                            <label asp-for="Arquivo"></label>
+                        </dt>
+                        <dd>
+                            <input asp-for="Arquivo" type="file">
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-right">
+                    <div class=" ml-auto"></div>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Salvar</button>
+                    <a href="@Url.Action("Index")" class="btn btn-dark"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
