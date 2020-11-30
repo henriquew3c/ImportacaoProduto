@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace _1.Cliente.Support.Extensions
+namespace _Support.Extensions
 {
     public class MaxFileSizeAttribute : ValidationAttribute
     {
@@ -14,7 +14,7 @@ namespace _1.Cliente.Support.Extensions
         protected override ValidationResult IsValid(
             object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
+            IFormFile file = value as IFormFile;
 
             if (file == null) return ValidationResult.Success;
             

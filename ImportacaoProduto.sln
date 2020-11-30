@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Metadados", "_Metadados", 
 		_Metadados\Teste PMESP.pdf = _Metadados\Teste PMESP.pdf
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.API", "2.API\2.API.csproj", "{2020B0DD-DEB3-48E2-B869-1350A9FB57BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_Support", "_Support\_Support.csproj", "{2DBE5CE7-5810-4E6F-BF9B-8C2B2506E3D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71DB528F-C48A-4E75-9249-FDC06C9CBB9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2020B0DD-DEB3-48E2-B869-1350A9FB57BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2020B0DD-DEB3-48E2-B869-1350A9FB57BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2020B0DD-DEB3-48E2-B869-1350A9FB57BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2020B0DD-DEB3-48E2-B869-1350A9FB57BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DBE5CE7-5810-4E6F-BF9B-8C2B2506E3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBE5CE7-5810-4E6F-BF9B-8C2B2506E3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DBE5CE7-5810-4E6F-BF9B-8C2B2506E3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBE5CE7-5810-4E6F-BF9B-8C2B2506E3D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

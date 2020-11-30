@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using _1.Cliente.Application;
-using _1.Cliente.Support;
+using _Support;
 using MediatR;
 
 namespace _1.Cliente.Controllers

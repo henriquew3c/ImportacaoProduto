@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace _1.Cliente.Support
+namespace _Support
 {
     public class MvcValidator : BasicValidation, IValidationState
     {

@@ -1,4 +1,4 @@
-﻿namespace _1.Cliente.Support
+﻿namespace _Support
 {
     public interface IDomainValidation
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 
-namespace _1.Cliente.Support.Extensions
+namespace _Support.Extensions
 {
     public class AllowedExtensionsAttribute : ValidationAttribute
     {
@@ -29,7 +29,7 @@ namespace _1.Cliente.Support.Extensions
             return ValidationResult.Success;
         }
 
-        public string GetErrorMessage()
+        private string GetErrorMessage()
         {
             return $"A extensão do arquivo não é permitida.";
         }
