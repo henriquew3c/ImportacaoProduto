@@ -53,9 +53,24 @@ namespace _2.API.Models
                 errosAtuais.Add($"A data de entrega do produto não é uma data válida. Erro na Linha: {row}.");
             }
 
+            if (DataEntrega <= DateTime.Now)
+            {
+                errosAtuais.Add($"A data de entrega do produto não pode ser menor ou igual que o dia atual. Erro na Linha: {row}.");
+            }
+
             if (Nome == null)
             {
                 errosAtuais.Add($"O nome do produto não pode ser nulo. Erro na Linha: {row}.");
+            }
+
+            if (Nome.Length > 50)
+            {
+                errosAtuais.Add($"O campo nome deve possuir tamanho máximo de 50 caráteres. Erro na Linha: {row}.");
+            }
+
+            if (Quantidade <= 0)
+            {
+                errosAtuais.Add($"O campo quantidade tem que ser maior que zero. Erro na Linha: {row}.");
             }
 
             if (int.TryParse(Quantidade.ToString(), out _) == false)

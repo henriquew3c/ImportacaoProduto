@@ -20,5 +20,10 @@ namespace _1.Cliente.Models
 
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
+
+        public double GetValorTotal()
+        {
+            return ValorUnitario * Quantidade;
+        }
     }
 }

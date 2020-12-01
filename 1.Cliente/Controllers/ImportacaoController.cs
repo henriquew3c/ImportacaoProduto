@@ -18,9 +18,7 @@ namespace _1.Cliente.Controllers
         public async Task<IActionResult> Index(string mensagem)
         {
             ViewBag.Mensagem = mensagem;
-
-            var importacoes = await _mediator.Send(new GetImportacoesRequest());
-            return View(importacoes);
+            return View(await _mediator.Send(new GetImportacoesRequest()));
         }
 
         [HttpGet]
@@ -32,8 +30,7 @@ namespace _1.Cliente.Controllers
         [HttpGet]
         public async Task<IActionResult> Visualizar(Guid id)
         {
-            var importacao = await _mediator.Send(new GetImportacaoRequest {Id = id});
-            return View(importacao);
+            return View(await _mediator.Send(new GetImportacaoRequest { Id = id }));
         }
 
         [HttpPost]
