@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using _2.API.Models;
 using _2.API.Repository;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace _2.API.Application
 {
-    internal class GetImportacoesHandler : IRequestHandler<GetImportacoesRequest, PaginationResult<Importacao>>
+    internal class GetImportacoesHandler : IRequestHandler<GetImportacoesRequest, IEnumerable<Importacao>>
     {
         private readonly IImportacaoRepository _importacaoRepository;
 
@@ -16,11 +17,9 @@ namespace _2.API.Application
             _importacaoRepository = importacaoRepository;
         }
 
-        public Task<PaginationResult<Importacao>> Handle(GetImportacoesRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<Importacao>> Handle(GetImportacoesRequest request, CancellationToken cancellationToken)
         {
-            var importacoes = _importacaoRepository.GetImportacoes(request);
-
-            return Task.FromResult(importacoes);
+            return Task.FromResult(_importacaoRepository.GetImportacoes());
         }
     }
 }

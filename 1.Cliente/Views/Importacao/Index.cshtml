@@ -1,13 +1,12 @@
 ﻿
-@model List<Importacao>
+@model IEnumerable<Importacao>
 
 @{
-    ViewData["Title"] = "Listagem de Importações";
+    ViewData["Title"] = "Importações";
 }
 
 @section Breadcrumb
 {
-    <li class="breadcrumb-item">Importação</li>
     <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
 }
 
@@ -16,6 +15,15 @@
         <h4 class="card-title">@ViewData["Title"]</h4>
     </div>
     <div class="card-body">
+
+        @if (ViewBag.Mensagem != null)
+        {
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @ViewBag.Mensagem.
+            </div>
+        }
+
         <div class="p-2">
             <a href="@Url.Action("ImportarArquivo")" class="btn btn-primary btn-sm">
                 <i class="fa fa-plus" aria-hidden="true"></i> Novo
@@ -25,9 +33,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Identificador</th>
                     <th scope="col">Data de Importação</th>
                     <th scope="col">Quantidade de Produtos Importados</th>
+                    <th scope="col">Menor Data Entrega</th>
+                    <th scope="col">Valor Total Importação</th>
                     <th scope="col">Ações</th>
 
                 </tr>
@@ -36,11 +46,13 @@
                 @foreach (var importacao in Model)
                 {
                     <tr>
-                        <th scope="row">1</th>
+                        <td>@importacao.Id</td>
                         <td>@importacao.DataImportacao</td>
                         <td>@importacao.QuantidadeProdutosImportados</td>
+                        <td>@importacao.GetMenorDataEntrega()</td>
+                        <td>@importacao.GetValorTotalImportacao()</td>
                         <td>
-                            <a title="Visualizar" href="Importacoes/@importacao.Id">
+                            <a title="Visualizar" href="Importacao/Visualizar/@importacao.Id">
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </a>
                         </td>

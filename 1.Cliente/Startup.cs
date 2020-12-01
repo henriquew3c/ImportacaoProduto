@@ -21,6 +21,7 @@ namespace _1.Cliente
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddHttpClient();
 
             services.AddControllersWithViews();
             services.AddMediatR(typeof(Startup));

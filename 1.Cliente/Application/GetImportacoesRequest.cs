@@ -4,7 +4,7 @@ using MediatR;
 
 namespace _1.Cliente.Application
 {
-    public class GetImportacoesRequest : IRequest<List<Importacao>>
+    public class GetImportacoesRequest : IRequest<IEnumerable<Importacao>>
     {
 
     }

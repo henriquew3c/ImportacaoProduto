@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using _Support.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace _1.Cliente.Application
 {
-    public class CreateImportacoesRequest : IRequest
+    public class CreateImportacoesRequest : IRequest<List<string>>
     {
         [Required(ErrorMessage = "O campo Arquivo é obrigatório.")]
         [AllowedExtensions(new string[] { ".xls", ".xlsx" })]

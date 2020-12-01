@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using _2.API.Infra;
 using _2.API.Models;
 using _2.API.Repository.Default;
-using _Support;
-using _Support.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace _2.API.Repository
 {
@@ -16,18 +17,22 @@ namespace _2.API.Repository
             _dbContext = dbContext;
         }
 
-        public PaginationResult<Importacao> GetImportacoes(PaginationRequest paginationRequest)
+        public override Importacao Find(Guid key)
         {
-            var query = DbSet;
+            return
+                DbSet
+                .Include(x => x.Produtos)
+                .AsNoTrackingWithIdentityResolution()
+                .FirstOrDefault(x=>x.Id == key);
+        }
 
-            var pagedResult = query
-                .OrderByDynamic(paginationRequest.Order)
-                .Skip(paginationRequest.Start)
-                .Take(paginationRequest.PageSize)
+        public IEnumerable<Importacao> GetImportacoes()
+        {
+            return
+                DbSet
+                .Include(x => x.Produtos)
+                .AsNoTrackingWithIdentityResolution()
                 .ToList();
-
-            return new PaginationResult<Importacao>(pagedResult, query.Count());
-
         }
     }
 }

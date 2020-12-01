@@ -6,7 +6,7 @@
 
 @section Breadcrumb
 {
-    <li class="breadcrumb-item">Importação</li>
+    <li class="breadcrumb-item">@Html.ActionLink("Importações", "Index", "Importacao")</li>
     <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
 }
 
@@ -20,6 +20,14 @@
             @Html.AntiForgeryToken()
 
             @Html.ValidationSummary("Validação:", new { @class = "alert alert-danger m-b-40" })
+
+            @if (ViewBag.MensagensErro != null)
+            {
+                foreach (var mensagem in ViewBag.MensagensErro)
+                {
+                    <div class="alert alert-danger" role="alert">@mensagem</div>
+                }
+            }
 
             <div class="row pt-2">
                 <div class="col-md-12">

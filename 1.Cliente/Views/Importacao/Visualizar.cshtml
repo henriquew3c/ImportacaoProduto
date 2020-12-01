@@ -1,0 +1,74 @@
+﻿@model Importacao
+
+@{
+    ViewBag.Title = "Visualizar Importação";
+    Layout = "_Layout";
+}
+
+@section Breadcrumb
+{
+    <li class="breadcrumb-item"><a href="@Url.Action("Index")">Importações</a></li>
+    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Importação</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <dl>
+                    <dt>Id</dt>
+                    <dd>@Model.Id</dd>
+                    <dt>Data Importacao</dt>
+                    <dd>@Model.DataImportacao</dd>
+                    <dd>Quantidade de Produtos Importados</dd>
+                    <dt>@Model.QuantidadeProdutosImportados</dt>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl>
+                    <dt scope="col">Menor Data Entrega</dt>
+                    <dd>@Model.GetMenorDataEntrega()</dd>
+                    <dt scope="col">Valor Total Importação</dt>
+                    <dd>@Model.GetValorTotalImportacao()</dd>
+                </dl>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<br />
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Produtos</h4>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Identificador</th>
+                <th scope="col">Data Entrega</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Valor Unitario</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var produto in Model.Produtos)
+            {
+                <tr>
+                    <td>@produto.Id</td>
+                    <td>@produto.DataEntrega</td>
+                    <td>@produto.Nome</td>
+                    <td>@produto.Quantidade</td>
+                    <td>@produto.ValorUnitario</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+</div>

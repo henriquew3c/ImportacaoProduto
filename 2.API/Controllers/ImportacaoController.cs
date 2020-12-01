@@ -15,32 +15,32 @@ namespace _2.API.Controllers
     public class ImportacaoController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IValidationState _validationState;
+        private readonly IDomainValidation _domainValidation;
 
         public ImportacaoController(
             IMediator mediator,
-            IValidationState validationState)
+            IDomainValidation domainValidation)
         {
             _mediator = mediator;
-            _validationState = validationState;
+            _domainValidation = domainValidation;
             _mediator = mediator;
         }
 
         [HttpPost("{arquivo}")]
         public async Task<ActionResult> PostImportacoes(IFormFile arquivo)
         {
-            await _mediator.Send(new CreateImportacoesRequest(arquivo));
+            var mensagensErro = await _mediator.Send(new CreateImportacoesRequest(arquivo));
 
-            if (_validationState.FillErrors(ModelState))
+            if (_domainValidation.IsValid == false)
             {
-                return StatusCode(400, "Problemas de Validação");
+                return StatusCode(400, mensagensErro);
             }
 
             return StatusCode(200, "Produtos importados com sucesso!");
         }
 
         [HttpGet]
-        public async Task<PaginationResult<Importacao>> GetImportacoes()
+        public async Task<IEnumerable<Importacao>> GetImportacoes()
         {
             return await _mediator.Send(new GetImportacoesRequest());
         }

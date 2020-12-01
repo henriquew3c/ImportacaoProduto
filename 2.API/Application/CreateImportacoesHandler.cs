@@ -1,125 +1,106 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using _2.API.Infra;
 using _2.API.Models;
 using _2.API.Repository;
+using _Support;
 using MediatR;
 using OfficeOpenXml;
 
 namespace _2.API.Application
 {
-    internal class CreateImportacoesHandler : AsyncRequestHandler<CreateImportacoesRequest>
+    internal class CreateImportacoesHandler : IRequestHandler<CreateImportacoesRequest, List<string>>
     {
         private readonly IImportacaoRepository _importacaoRepository;
+        private readonly IDomainValidation _domainValidation;
         private readonly IUnityOfWork _unityOfWork;
 
         public CreateImportacoesHandler(
             IImportacaoRepository importacaoRepository,
+            IDomainValidation _domainValidation,
             IUnityOfWork unityOfWork)
         {
             _importacaoRepository = importacaoRepository;
+            this._domainValidation = _domainValidation;
             _unityOfWork = unityOfWork;
         }
 
-        protected override Task Handle(CreateImportacoesRequest request, CancellationToken cancellationToken)
+        public async Task<List<string>> Handle(CreateImportacoesRequest request, CancellationToken cancellationToken)
         {
+            var mensagemsErro = new List<string>();
+
             if (request.Arquivo == null)
             {
-                throw new ArgumentException("O Arquivo deve ser informado.");
+                mensagemsErro.Add("O Arquivo deve ser informado.");
+                return mensagemsErro;
             }
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             var produtos = new List<Produto>();
             var importacao = new Importacao(Guid.NewGuid(), DateTime.Now);
-            var mensagemsErro = new List<string>();
 
             using (var package = new ExcelPackage(request.Arquivo.OpenReadStream()))
             {
-                foreach (ExcelWorksheet worksheet in package.Workbook.Worksheets)
+                foreach (var worksheet in package.Workbook.Worksheets)
                 {
                     //loop all rows
-                    for (var i = 2; i <= worksheet.Dimension.End.Row; i++)
+                    for (var row = 2; row <= worksheet.Dimension.End.Row; row++)
                     {
                         //loop all columns in a row
-                        var dataEntrega = worksheet.Cells[i, 1].Text;
-                        var nome = worksheet.Cells[i, 2].Text;
-                        var quantidade = worksheet.Cells[i, 3].Text;
-                        var valorUnitario = worksheet.Cells[i, 4].Text;
+                        var produto = 
+                            GetProdutoByRow(worksheet, row);
 
-                        var errosAtuais = new List<string>();
+                        var erros= produto.Valida(row);
 
-                        if (dataEntrega == null)
+                        if (erros.Count != 0)
                         {
-                            errosAtuais.Add($"A data de entrega do produto não pode ser nula. Erro na Linha: {i}.");
+                            mensagemsErro.AddRange(erros);
                         }
 
-                        if (DataIsValid(dataEntrega) == false)
-                        {
-                            errosAtuais.Add($"A data de entrega do produto não é uma data válida. Erro na Linha: {i}.");
-                        }
+                        if (erros.Count != 0) continue;
 
-                        if (nome == null)
-                        {
-                            errosAtuais.Add($"O nome do produto não pode ser nulo. Erro na Linha: {i}.");
-                        }
-
-                        if (quantidade == null)
-                        {
-                            errosAtuais.Add($"A quantidade do produto não pode ser nulo. Erro na Linha: {i}.");
-                        }
-
-                        if (int.TryParse(quantidade, out _) == false)
-                        {
-                            errosAtuais.Add($"A quantidade do produto deve corresponder a um valor inteiro. Erro na Linha: {i}.");
-                        }
-
-                        if (double.TryParse(valorUnitario, out _) == false)
-                        {
-                            errosAtuais.Add($"O valor unitário do produto deve corresponder a um valor flutuante (ex: 10,1 ou 10,0). Erro na Linha: {i}.");
-                        }
-
-                        if (errosAtuais.Count != 0)
-                        {
-                            mensagemsErro.AddRange(errosAtuais);
-                        }
-
-                        if (errosAtuais.Count == 0)
-                        {
-                            var produto = new Produto(
-                                Guid.NewGuid(),
-                                DateTime.Parse(dataEntrega),
-                                nome,
-                                int.Parse(quantidade),
-                                double.Parse(valorUnitario),
-                                importacao
-                            );
-
-                            importacao.QuantidadeProdutosImportados++;
-
-                            produtos.Add(produto);
-                        }
+                        produto.Importacao = importacao;
+                        importacao.QuantidadeProdutosImportados++;
+                        produtos.Add(produto);
                     }
 
                 }
             }
 
+            if (mensagemsErro.Count != 0)
+            {
+                _domainValidation.AddError("Erros foram encontrados!");
+                mensagemsErro.Add("Nenhum produto foi importado, corrija a planilha e tente novamente.");
+            }
+
             importacao.Produtos = produtos;
+
             _importacaoRepository.Store(importacao);
 
-            return _unityOfWork.SaveChangesIfDomainIsValid();
+            await _unityOfWork.SaveChangesIfDomainIsValid();
+
+            return mensagemsErro;
         }
 
-        private static bool DataIsValid(string data)
+        private static Produto GetProdutoByRow(ExcelWorksheet worksheet, int row)
         {
-            var regex = new Regex(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$");
+            var dataEntrega = worksheet.Cells[row, 1].Text;
+            var nome = worksheet.Cells[row, 2].Text;
+            var quantidade = worksheet.Cells[row, 3].Text;
+            var valorUnitario = worksheet.Cells[row, 4].Text;
 
-            //Verify whether date entered in dd/MM/yyyy format.
-            return regex.IsMatch(data.Trim());
+            return new Produto(
+                Guid.NewGuid(),
+                DateTime.Parse(dataEntrega),
+                nome,
+                int.Parse(quantidade),
+                double.Parse(valorUnitario)
+            );
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using _1.Cliente.Application;
-using _Support;
 using MediatR;
 
 namespace _1.Cliente.Controllers
@@ -9,27 +9,35 @@ namespace _1.Cliente.Controllers
     public class ImportacaoController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IValidationState _validationState;
 
-        public ImportacaoController(IMediator mediator, IValidationState validationState)
+        public ImportacaoController(IMediator mediator)
         {
             _mediator = mediator;
-            _validationState = validationState;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string mensagem)
         {
-            return View(_mediator.Send(new GetImportacoesRequest()).Result);
+            ViewBag.Mensagem = mensagem;
+
+            var importacoes = await _mediator.Send(new GetImportacoesRequest());
+            return View(importacoes);
         }
 
         [HttpGet]
         public IActionResult ImportarArquivo()
         {
-            return View();
+            return View(new CreateImportacoesRequest());
+        } 
+        
+        [HttpGet]
+        public async Task<IActionResult> Visualizar(Guid id)
+        {
+            var importacao = await _mediator.Send(new GetImportacaoRequest {Id = id});
+            return View(importacao);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ImportarArquivo(CreateImportacoesRequest request)
         {
             if (!ModelState.IsValid)
@@ -37,12 +45,14 @@ namespace _1.Cliente.Controllers
                 return View(request);
             }
 
-            await _mediator.Send(request);
+            var mensagensErro = await _mediator.Send(request);
 
-            if (_validationState.FillErrors(ModelState))
+            if (mensagensErro.Count == 0)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new {Mensagem = "Produtos Importados com sucesso!" });
             }
+
+            ViewBag.MensagensErro = mensagensErro;
 
             return View(request);
         }
